@@ -1,0 +1,71 @@
+﻿@model NMTCourses.Models.Course
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h1>Редагувати курс</h1>
+
+<hr />
+<div class="text-danger">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <!-- Додано method="post" -->
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title)
+        @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.Title, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 5 })
+        @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.StartDate)
+        @Html.EditorFor(m => m.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.StartDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.EndDate)
+        @Html.EditorFor(m => m.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(m => m.EndDate, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Teacher")
+        @Html.DropDownListFor(m => m.TeacherID, (SelectList)ViewData["TeacherID"], "Select Teacher", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.TeacherID, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Category")
+        @Html.DropDownListFor(m => m.CategoryID, (SelectList)ViewData["CategoryID"], "Select Category", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CategoryID, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Новий файл")
+        <div>
+            <input type="file" name="file" class="form-control" />
+            @if (!string.IsNullOrEmpty(Model.FileUrl))
+            {
+                <p>Поточний файл: <a href="@Url.Content("~/" + Model.FileUrl)" target="_blank">@Model.FileUrl</a></p>
+            }
+            else
+            {
+                <p>Файл не завантажено.</p>
+            }
+        </div>
+    </div>
+
+    <input type="hidden" asp-for="ID" />
+
+    <div class="form-group">
+        <input type="submit" value="Зберегти зміни" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-secondary">Назад до списку курсів</a>
+    </div>
+</form>

@@ -1,0 +1,39 @@
+﻿@model NMTCourses.Models.Teacher
+
+<h1>Створити викладача</h1>
+
+<form asp-action="Create" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Bio"></label>
+        <textarea asp-for="Bio" class="form-control"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <!-- Поле для завантаження зображення -->
+    <div class="form-group">
+        <label>Фотографія викладача</label>
+        <input type="file" name="photo" class="form-control" accept="image/*" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Створити</button>
+    <div asp-validation-summary="All" class="text-danger"></div>
+</form>
+
+<div>
+    <a asp-action="Index">Назад до списку викладачів</a>
+</div>

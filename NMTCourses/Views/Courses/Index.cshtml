@@ -1,0 +1,134 @@
+﻿@model IEnumerable<NMTCourses.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+
+    // Обчислюємо тривалість курсів у днях
+    var courseDurations = Model.Select(c => (c.EndDate - c.StartDate).TotalDays);
+    var courseTitles = Model.Select(c => c.Title);
+}
+
+<h1>ZNOHUB</h1>
+
+<p>
+    <a asp-action="Create">Створити новий курс</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().FileUrl)
+            </th>
+            <th>
+                Викладач
+            </th>
+            <th>
+                Категорія
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FileUrl)
+                </td>
+                <td>
+                    @if (item.Teacher != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Teacher.FirstName)
+                    }
+                    else
+                    {
+                        <span>Невідомий викладач</span>
+                    }
+                </td>
+                <td>
+                    @if (item.Category != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    }
+                    else
+                    {
+                        <span>Невідома категорія</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Деталі</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Видалити</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Додаємо canvas для діаграми -->
+<canvas id="courseDurationChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div style="text-align: center;">
+    <canvas id="courseDurationChart" width="200" height="200"></canvas>
+</div>
+
+<script>
+    var ctx = document.getElementById('courseDurationChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(courseTitles)), // назви курсів
+            datasets: [{
+                label: 'Тривалість курсу (днів)',
+                data: @Html.Raw(Json.Serialize(courseDurations)), // тривалість курсів
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false, // Статичний розмір діаграми
+            plugins: {
+                legend: {
+                    position: 'bottom' // Розміщуємо легенду під діаграмою
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Кількість днів'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
