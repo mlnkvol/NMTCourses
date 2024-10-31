@@ -49,7 +49,7 @@ namespace NMTCourses.Controllers
         // GET: Courses/Create
         public IActionResult Create()
         {
-            PopulateDropdowns(); // Викликаємо метод для заповнення списків
+            PopulateDropdowns(); 
             return View(new Course());
         }
 
@@ -60,7 +60,6 @@ namespace NMTCourses.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Завантаження файлу
                 if (file != null && file.Length > 0)
                 {
                     var filePath = Path.Combine("uploads", file.FileName);
@@ -68,7 +67,7 @@ namespace NMTCourses.Controllers
                     {
                         await file.CopyToAsync(stream);
                     }
-                    course.FileUrl = filePath; // Зберігаємо шлях до файлу
+                    course.FileUrl = filePath; 
                 }
 
                 _context.Add(course);
@@ -76,8 +75,7 @@ namespace NMTCourses.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Якщо є помилки, повертаємо форму з даними для селектів
-            PopulateDropdowns(course); // Передаємо курс для заповнення списків
+            PopulateDropdowns(course);
             return View(course);
         }
 
@@ -94,7 +92,7 @@ namespace NMTCourses.Controllers
             {
                 return NotFound();
             }
-            PopulateDropdowns(course); // Викликаємо метод для заповнення списків
+            PopulateDropdowns(course); 
             return View(course);
         }
 
@@ -112,12 +110,10 @@ namespace NMTCourses.Controllers
             {
                 try
                 {
-                    // Якщо новий файл вибрано, завантажити його
                     if (file != null && file.Length > 0)
                     {
                         var uploadsDir = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
 
-                        // Перевіряємо існування директорії
                         if (!Directory.Exists(uploadsDir))
                         {
                             Directory.CreateDirectory(uploadsDir);
@@ -128,15 +124,14 @@ namespace NMTCourses.Controllers
                         {
                             await file.CopyToAsync(stream);
                         }
-                        course.FileUrl = Path.Combine("uploads", file.FileName); // Зберігаємо відносний шлях до файлу
+                        course.FileUrl = Path.Combine("uploads", file.FileName); 
                     }
                     else
                     {
-                        // Якщо новий файл не вибрано, залишити старий файл
                         var existingCourse = await _context.Courses.FindAsync(course.ID);
                         if (existingCourse != null)
                         {
-                            course.FileUrl = existingCourse.FileUrl; // Залишити існуючий файл
+                            course.FileUrl = existingCourse.FileUrl; 
                         }
                     }
 
@@ -203,7 +198,6 @@ namespace NMTCourses.Controllers
 
         private void PopulateDropdowns(Course course = null)
         {
-            // Прибираємо "Select Category" та "Select Teacher"
             ViewData["CategoryID"] = new SelectList(_context.Categories, "ID", "Name", course?.CategoryID);
             ViewData["TeacherID"] = new SelectList(_context.Teachers, "ID", "LastName", course?.TeacherID);
         }
