@@ -3,35 +3,59 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NMTCourses</title>
+    <title>@ViewData["Title"] - ZNOHUB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/NMTCourses.styles.css" asp-append-version="true" />
+    <style>
+        body {
+            padding-top: 70px;
+        }
+
+        /* Стилі для активної вкладки навігаційного бару */
+        .nav-link.active {
+            background-color: #007bff; /* Колір фону для активної вкладки */
+            color: white; /* Колір тексту для активної вкладки */
+            border-radius: 5px; /* Закруглені кути */
+        }
+
+        .nav-link:hover {
+            background-color: #0056b3; /* Колір фону при наведенні */
+            color: white; /* Колір тексту при наведенні */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3 fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NMTCourses</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ZNOHUB</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="nav nav-pills me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Courses" asp-action="Index">Курси</a>
+                            <a class="nav-link @(ViewData["ActiveController"]?.ToString() == "Courses" ? "active" : "")" asp-controller="Courses" asp-action="Index">Курси</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle @(ViewData["ActiveController"]?.ToString() == "Teachers" ? "active" : "")" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Викладачі</a>
+                            <div class="dropdown-menu">
+                                <h6 class="dropdown-header">Список викладачів</h6>
+                                <a class="dropdown-item" asp-controller="Teachers" asp-action="Index">Переглянути</a>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Teachers" asp-action="Index">Викладачі</a>
+                            <a class="nav-link @(ViewData["ActiveController"]?.ToString() == "Categories" ? "active" : "")" asp-controller="Categories" asp-action="Index">Категорії</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Categories" asp-action="Index">Категорії</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Students" asp-action="Index">Учні</a>
+                            <a class="nav-link @(ViewData["ActiveController"]?.ToString() == "Students" ? "active" : "")" asp-controller="Students" asp-action="Index">Учні</a>
                         </li>
                     </ul>
+                    <div class="navbar-text">
+                        <span class="me-3">Телефон: +38 (066) 178-36-06</span>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -50,6 +74,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

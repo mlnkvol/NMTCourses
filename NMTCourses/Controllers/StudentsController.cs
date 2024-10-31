@@ -62,9 +62,8 @@ namespace NMTCourses.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Виведіть помилки, якщо ModelState не є дійсним
             var errors = ModelState.Values.SelectMany(v => v.Errors).ToList();
-            return View(student); // Повертаємо модель назад, щоб показати помилки
+            return View(student);
         }
 
 

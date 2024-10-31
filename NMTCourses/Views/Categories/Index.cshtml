@@ -1,35 +1,48 @@
 ﻿@model IEnumerable<NMTCourses.Models.Category>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Список категорій";
 }
 
 <h1>Список категорій</h1>
 
 <p>
-    <a asp-action="Create">Додати нову категорію</a>
+    <a asp-action="Create" class="btn btn-outline-dark">Додати нову категорію</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Редагувати</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Деталі</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Видалити</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <!-- Встановлено відступ між картками -->
+            <div class="card" style="border: 2px solid black; border-radius: 5px; text-align: center;">
+                <div class="card-body">
+                    <h5 class="card-title" style="color: blue;">@Html.DisplayFor(modelItem => item.Name)</h5>
+                    <div class="d-flex justify-content-around">
+                        <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-outline-dark">Редагувати</a>
+                        <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-outline-dark">Деталі</a>
+                        <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-outline-dark">Видалити</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .btn-outline-dark {
+        color: black;
+        background-color: white;
+        border: 1px solid black;
+        transition: background-color 0.3s ease; /* Додана анімація при наведенні */
+    }
+
+        .btn-outline-dark:hover {
+            background-color: #b2e0ff; /* Світло-голубий колір при наведенні */
+        }
+
+    .card {
+        padding: 20px; /* Внутрішнє відступи */
+        height: 100%; /* Забезпечує однакову висоту карток */
+    }
+</style>

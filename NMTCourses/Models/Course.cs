@@ -16,17 +16,14 @@ namespace NMTCourses.Models
         public DateTime EndDate { get; set; }
         [Display(Name = "Пробний конспект курсу")]
         public string? FileUrl { get; set; }
-
-		// Foreign keys
-		public int TeacherID { get; set; }
+        [Display(Name = "Викладач")]
+        public int TeacherID { get; set; }
         [Display(Name = "Викладач")]
         public Teacher? Teacher { get; set; }
-
-		public int CategoryID { get; set; }
+        [Display(Name = "Категорія")]
+        public int CategoryID { get; set; }
         [Display(Name = "Категорія")]
         public Category? Category { get; set; }
-
-		// Navigation property for many-to-many relationship
 
 	}
 }

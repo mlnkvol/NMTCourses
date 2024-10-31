@@ -28,4 +28,36 @@ body {
     object-fit: cover; 
 }
 
+.info-rectangle {
+    background-color: rgba(173, 216, 230, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+}
 
+#countdown {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(173, 216, 230, 0.8); 
+    border-radius: 10px;
+}
+
+.btn-outline-dark {
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-outline-dark:hover {
+        background-color: #b2e0ff;
+    }
+
+.row {
+    margin-bottom: 20px;
+}
+
+.card {
+    padding: 20px;
+    margin-bottom: 20px;
+}

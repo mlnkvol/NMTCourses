@@ -1,59 +1,103 @@
-﻿@model NMTCourses.Models.Course
+﻿<div class="container mt-4">
+    <h1 class="mb-4">Деталі курсу @Model.Title</h1>
 
-@{
-    ViewData["Title"] = "Details";
-}
+    <div id="countdown" class="text-center mt-4">
+        <h2 class="text-primary">Зворотний лічильник до початку курсу:</h2>
+        <div id="timer" class="countdown-timer" style="font-size: 48px; color: blue;"></div>
+    </div>
 
-<h1>Деталі курсу @Model.Title</h1>
+    <div class="card mt-5">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                @if (!string.IsNullOrEmpty(Model.Teacher.PhotoUrl))
+                {
+                    <img src="@Model.Teacher.PhotoUrl" class="img-fluid rounded-left" alt="Фото викладача" style="width: 100%; height: auto; border-radius: 15px 0 0 15px;">
+                }
+                else
+                {
+                    <div class="bg-light text-center rounded-left" style="width: 100%; height: 100%; border-radius: 15px 0 0 15px;">
+                        <p>Фото викладача недоступне</p>
+                    </div>
+                }
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h4 class="card-title text-primary" style="font-size: 1.5rem;">@Model.Title</h4>
+                    <h4 class="card-title">Опис курсу</h4>
+                    <p class="card-text">@Model.Description</p>
+                    <hr />
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h5>Період курсу:</h5>
+                            <p>Початок: @Model.StartDate.ToShortDateString()</p>
+                            <p>Завершення: @Model.EndDate.ToShortDateString()</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h5>Категорія:</h5>
+                            <p>@Model.Category.Name</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<div>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FileUrl)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FileUrl)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Teacher)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Teacher.FirstName) @Html.DisplayFor(model => model.Teacher.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Category.Name) 
-        </dd>
-    </dl>
+    <div class="card mt-4" style="text-align: center;">
+        <div class="row no-gutters">
+            <div class="col-md-6 offset-md-3" style="background-color: rgba(173, 216, 230, 0.8); border-radius: 10px; padding: 20px;">
+                <h4 class="card-title">Інформація про викладача</h4>
+                <h5>@Model.Teacher.FirstName @Model.Teacher.LastName</h5>
+                <p>@Model.Teacher.Bio</p>
+                <p>Email: @Model.Teacher.Email</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Edit" asp-route-id="@Model?.ID" class="btn btn-primary">Редагувати</a>
+        <a asp-action="Index" class="btn btn-secondary">Назад до списку курсів</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Редагувати</a> |
-    <a asp-action="Index">Назад до списку курсів</a>
-</div>
+
+<style>
+    .countdown-timer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Arial', sans-serif;
+        background-color: rgba(173, 216, 230, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        margin-top: 20px;
+        transition: transform 0.3s;
+    }
+
+        .countdown-timer:hover {
+            transform: scale(1.05);
+        }
+
+        .countdown-timer h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+</style>
+
+<script>
+    var startDate = new Date('@Model.StartDate.ToString("yyyy-MM-dd HH:mm:ss")').getTime();
+
+    var countdownFunction = setInterval(function () {
+        var now = new Date().getTime();
+        var distance = startDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        document.getElementById("timer").innerHTML = days + " дн. " + hours + " год. "
+            + minutes + " хв. " + seconds + " сек.";
+        if (distance < 0) {
+            clearInterval(countdownFunction);
+            document.getElementById("timer").innerHTML = "Курс почався!";
+        }
+    }, 1000);
+</script>
